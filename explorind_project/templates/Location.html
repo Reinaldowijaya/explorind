@@ -1,0 +1,32 @@
+
+
+{% extends "Base.html" %}
+
+{% block content %}
+    {% load mptt_tags %}
+	
+	<div class="navigation">
+	
+	{{location.get_ancestors|tree_path:" > "}} > {{location}}
+	
+	</div>
+	
+	<div class="main">
+	
+	<h2>{{location}} </h2> <br>
+	<img src="{{ location.image.url }}" width="400" height="300" /><br>
+	<br>{{location.description}} <br>
+	
+	<h3> Tempat menarik: </h3>
+	
+	
+	<ul>
+		{% for placeofinterest in location.placeofinterest_set.all %}
+		<a href="/locations/{{location}}/{{placeofinterest}}"><li> {{placeofinterest.name}}</li></a>
+		{% endfor %}
+	</ul>
+		
+	</div>
+
+{% endblock %}
+	

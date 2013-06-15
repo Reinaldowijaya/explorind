@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+ 
+{% block login %}
+    <form action="/login" method="post">{% csrf_token %}
+        {% for field in auth_form %}
+        {{ field }}
+        {% endfor %}
+        <input type="submit" id="btnLogIn" value="Log In">
+    </form>
+{% endblock %}
+ 
+{% block content %}
+{% if auth_form.non_field_errors or user_form.non_field_errors %}
+<div class="flash error">
+    {{ auth_form.non_field_errors }}
+    {{ user_form.non_field_errors }}
+</div>
+{% endif %}
+<img src="{{ STATIC_URL}}gfx/frog.jpg" width="526" height="315">
+<div class="panel right">	
+    <h1>Belom Join Explorind?</h1>
+	
+	<h1>Join pake facebook?
+		{% load socialaccount %}
+		<a href="{% provider_login_url 'facebook' method='oauth2' %}">Facebook</a>
+	</h1>
+        <form action="/signup" method="post">{% csrf_token %}
+            {% for field in user_form %}
+            {{ field }}
+            {% endfor %}
+            <input type="submit" value="Create Account">
+        </form>
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block login %}
+    {% with user.username as username %}
+        {{ block.super }}
+    {% endwith %}
+{% endblock %}
+ 
+{% block content %}
+    <div class="panel left">
+        <h1>{{ user.first_name }}'s Profile</h1>
+        <div class="ribbitWrapper">
+            <a href="/users/{{ user.username }}">
+                <span class="name">{{ user.first_name }}</span>
+            </a>
+                @{{ user.username }}
+            <p>
+                {{ reviews.count }} Reviews
+                <span class="spacing">{{ user.profile.follows.all.count }} Following</span>
+                <span class="spacing">{{ user.profile.followed_by.all.count }} Followers</span>
+            </p>
+            {% if follow %}
+            <form action="/follow" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="follow" value="{{ user.id }}">
+                <input type="submit" value="Follow">
+            </form>
+            {% endif %}
+        </div>
+    </div>
+ 
+    <div class="panel left">
+        <h1>{{ user.first_name }}'s Reviews</h1>
+        {% for review in reviews %}
+        <div class="ribbitWrapper">
+            <a href="/users/{{ user.username }}">
+                <span class="name">{{ review.user.first_name }}</span>
+            </a>
+            @{{ review.user.username }}
+            <span class="time">{{ review.created|timesince }}</span>
+            <p>{{ review.text }}</p>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}
